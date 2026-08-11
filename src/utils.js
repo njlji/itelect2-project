@@ -18,3 +18,11 @@ export const createTask = (taskData) => {
   }
   return { id: Date.now(), completed: false, ...taskData };
 };
+
+export async function fetchSampleUsers() {
+  return [
+    { id: '1', name: 'Leanne Graham', email: 'Sincere@april.biz' },
+    { id: '2', name: 'Ervin Howell', email: 'Shanna@melissa.tv' },
+    { id: '3', name: 'Clementine Bauch', email: 'Nathan@yesenia.net' },
+  ];
+}
