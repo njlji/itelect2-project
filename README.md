@@ -1,7 +1,7 @@
 # itelect2-project
 My IT Elective 2 backend web development project.
 
-![Screenshot](screenshots/Screenshot (29).png)
-![Screenshot](screenshots/Screenshot (30).png)
-![Screenshot](screenshots/Screenshot (31).png)
-![Screenshot](screenshots/Screenshot (32).png)
+![Screenshot 29](screenshots/Screenshot%20(29).png)
+![Screenshot 30](screenshots/Screenshot%20(30).png)
+![Screenshot 31](screenshots/Screenshot%20(31).png)
+![Screenshot 32](screenshots/Screenshot%20(32).png)
