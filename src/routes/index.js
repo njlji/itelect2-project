@@ -1,13 +1,8 @@
 import express from 'express';
-import { fetchSampleUsers, validateTask, mergeTaskUpdate } from '../utils.js';
+import { fetchSampleUsers, validateTask, mergeTaskUpdate, mockTasks } from '../utils.js';
 
 const router = express.Router();
-
-const tasks = [
-  { id: '1', title: 'Task One', completed: false },
-  { id: '2', title: 'Task Two', completed: true },
-  { id: '3', title: 'Task Three', completed: false },
-];
+const tasks = mockTasks;
 
 const sampleUsers = await fetchSampleUsers();
 const cachedUsers = Array.isArray(sampleUsers)

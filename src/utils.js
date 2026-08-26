@@ -1,4 +1,10 @@
 // utils.js
+export const mockTasks = [
+  { id: '1', title: 'Task One', completed: false },
+  { id: '2', title: 'Task Two', completed: true },
+  { id: '3', title: 'Task Three', completed: false },
+];
+
 export const formatDate = (date) => {return `Due : ${date.toLocaleDateString()}`};
 
 export const validateTask = (task = {}) => {const {title,dueDate} = task;return title && dueDate ? true : false;};
