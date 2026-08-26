@@ -1,65 +1,80 @@
 import express from 'express';
-import { fetchSampleUsers, validateTask, mergeTaskUpdate, mockTasks } from '../utils.js';
+import models from '../../models/index.cjs';
 
 const router = express.Router();
-const tasks = mockTasks;
+const { Task, User } = models;
 
-const sampleUsers = await fetchSampleUsers();
-const cachedUsers = Array.isArray(sampleUsers)
-  ? sampleUsers.map(({ id, name, email }) => ({ id, name, email }))
-  : [];
-
-router.get('/tasks', (req, res) => {
-  res.json(tasks);
-});
-
-router.get('/tasks/:id', (req, res) => {
-  const task = tasks.find((item) => item.id === req.params.id);
-  if (!task) {
-    return res.status(404).json({ error: 'Task not found' });
+router.get('/tasks', async (req, res) => {
+  try {
+    const tasks = await Task.findAll({ include: User });
+    res.json(tasks);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
   }
-  res.json(task);
 });
 
-router.post('/tasks', (req, res) => {
-  const taskData = req.body;
-  if (!validateTask(taskData)) {
-    return res.status(400).json({ error: 'Invalid task data' });
+router.get('/tasks/:id', async (req, res) => {
+  try {
+    const task = await Task.findByPk(req.params.id, { include: User });
+    if (!task) {
+      return res.status(404).json({ error: 'Task not found' });
+    }
+    res.json(task);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
   }
-
-  const createdTask = {
-    id: String(Date.now()),
-    completed: false,
-    ...taskData,
-  };
-
-  tasks.push(createdTask);
-  res.status(201).json(createdTask);
 });
 
-router.put('/tasks/:id', (req, res) => {
-  const index = tasks.findIndex((item) => item.id === req.params.id);
-  if (index === -1) {
-    return res.status(404).json({ error: 'Task not found' });
+router.post('/tasks', async (req, res) => {
+  try {
+    const { title, dueDate, completed = false, userId } = req.body;
+
+    if (!title || !dueDate || !userId) {
+      return res.status(400).json({ error: 'Invalid task data' });
+    }
+
+    const task = await Task.create({ title, dueDate, completed, userId });
+    res.status(201).json(task);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
   }
-
-  const updatedTask = mergeTaskUpdate(tasks[index], req.body);
-  tasks[index] = updatedTask;
-  res.json(updatedTask);
 });
 
-router.delete('/tasks/:id', (req, res) => {
-  const index = tasks.findIndex((item) => item.id === req.params.id);
-  if (index === -1) {
-    return res.status(404).json({ error: 'Task not found' });
+router.put('/tasks/:id', async (req, res) => {
+  try {
+    const task = await Task.findByPk(req.params.id);
+    if (!task) {
+      return res.status(404).json({ error: 'Task not found' });
+    }
+
+    const updatedTask = await task.update(req.body);
+    res.json(updatedTask);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
   }
-
-  tasks.splice(index, 1);
-  res.json({ message: 'Task deleted' });
 });
 
-router.get('/users', (req, res) => {
-  res.json(cachedUsers);
+router.delete('/tasks/:id', async (req, res) => {
+  try {
+    const task = await Task.findByPk(req.params.id);
+    if (!task) {
+      return res.status(404).json({ error: 'Task not found' });
+    }
+
+    await task.destroy();
+    res.json({ message: 'Task deleted' });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
+router.get('/users', async (req, res) => {
+  try {
+    const users = await User.findAll();
+    res.json(users);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
 });
 
 export default router;
