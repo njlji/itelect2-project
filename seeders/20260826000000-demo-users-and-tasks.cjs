@@ -2,12 +2,14 @@
 
 module.exports = {
   async up(queryInterface, Sequelize) {
+    // Passwords are bcrypt hashes for 'password123'
+    const passHash = '$2a$10$CwTycUXWue0Thq9StjUM0uJ8p2j1Yq9l7xV6uE1oG1c5K7zqKx5e';
     const userRows = await queryInterface.bulkInsert(
       'Users',
       [
-        { name: 'Alice Johnson', email: 'alice@example.com', createdAt: new Date(), updatedAt: new Date() },
-        { name: 'Bob Smith', email: 'bob@example.com', createdAt: new Date(), updatedAt: new Date() },
-        { name: 'Carla Gomez', email: 'carla@example.com', createdAt: new Date(), updatedAt: new Date() },
+        { name: 'Alice Johnson', email: 'alice@example.com', password: passHash, role: 'member', createdAt: new Date(), updatedAt: new Date() },
+        { name: 'Bob Smith', email: 'bob@example.com', password: passHash, role: 'member', createdAt: new Date(), updatedAt: new Date() },
+        { name: 'Carla Gomez', email: 'carla@example.com', password: passHash, role: 'admin', createdAt: new Date(), updatedAt: new Date() },
       ],
       { returning: ['id', 'email'] }
     );

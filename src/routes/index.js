@@ -1,5 +1,6 @@
 import express from 'express';
 import models from '../../models/index.cjs';
+import authRouter from './auth.js';
 
 const router = express.Router();
 const { Task, User } = models;
@@ -76,5 +77,7 @@ router.get('/users', async (req, res) => {
     res.status(500).json({ error: error.message });
   }
 });
+
+router.use('/auth', authRouter);
 
 export default router;
