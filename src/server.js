@@ -7,6 +7,10 @@ import apiRouter from './routes/index.js';
 const app = express();
 const PORT = process.env.PORT || 3000;
 
+if (!process.env.JWT_SECRET) {
+  console.warn('Warning: JWT_SECRET is not set. Authentication will use a default secret.');
+}
+
 app.use(cors());
 app.use(morgan('dev'));
 app.use(express.json());
