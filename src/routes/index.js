@@ -1,6 +1,8 @@
 import express from 'express';
 import models from '../../models/index.cjs';
 import authRouter from './auth.js';
+import verifyToken from '../../middleware/verifyToken.js';
+import { requireRole } from '../../middleware/requireRole.js';
 
 const router = express.Router();
 const { Task, User } = models;
@@ -26,7 +28,7 @@ router.get('/tasks/:id', async (req, res) => {
   }
 });
 
-router.post('/tasks', async (req, res) => {
+router.post('/tasks', verifyToken, async (req, res) => {
   try {
     const { title, dueDate, completed = false, userId } = req.body;
 
@@ -41,7 +43,7 @@ router.post('/tasks', async (req, res) => {
   }
 });
 
-router.put('/tasks/:id', async (req, res) => {
+router.put('/tasks/:id', verifyToken, async (req, res) => {
   try {
     const task = await Task.findByPk(req.params.id);
     if (!task) {
@@ -55,7 +57,7 @@ router.put('/tasks/:id', async (req, res) => {
   }
 });
 
-router.delete('/tasks/:id', async (req, res) => {
+router.delete('/tasks/:id', verifyToken, requireRole('admin'), async (req, res) => {
   try {
     const task = await Task.findByPk(req.params.id);
     if (!task) {
