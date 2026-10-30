@@ -6,12 +6,13 @@ import apiRouter from './routes/index.js';
 
 const app = express();
 const PORT = process.env.PORT || 3000;
+const allowedOrigins = ['http://localhost:5173', process.env.CORS_ORIGIN].filter(Boolean);
 
 if (!process.env.JWT_SECRET) {
   console.warn('Warning: JWT_SECRET is not set. Authentication will use a default secret.');
 }
 
-app.use(cors());
+app.use(cors({ origin: allowedOrigins }));
 app.use(morgan('dev'));
 app.use(express.json());
 app.use('/api', apiRouter);
