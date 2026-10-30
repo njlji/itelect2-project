@@ -1,7 +1,7 @@
 # itelect2-project
 My IT Elective 2 backend web development project.
 
-Live URL: https://itelect2-project.onrender.com
+Live URL: https://itelect2-project-o6y0.onrender.com/
 
 ## Postman Screenshots
 GET all tasks
