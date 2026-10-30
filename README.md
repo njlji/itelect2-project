@@ -1,5 +1,8 @@
 # itelect2-project
 My IT Elective 2 backend web development project.
+
+Live URL: https://itelect2-project.onrender.com
+
 ## Postman Screenshots
 GET all tasks
 ![Get All Tasks](screenshots/GT8_GET_all_tasks.png)
