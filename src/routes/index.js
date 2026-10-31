@@ -13,8 +13,8 @@ import {
 
 const router = express.Router();
 
-router.get('/tasks', getTasks);
-router.get('/tasks/:id', getTaskById);
+router.get('/tasks', verifyToken, getTasks);
+router.get('/tasks/:id', verifyToken, getTaskById);
 router.post('/tasks', verifyToken, createTask);
 router.put('/tasks/:id', verifyToken, updateTask);
 router.delete('/tasks/:id', verifyToken, requireRole('admin'), deleteTask);
